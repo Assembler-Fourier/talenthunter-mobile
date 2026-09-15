@@ -1,0 +1,16 @@
+# Recruiter A is already signed in and on the empty Post a job form.
+appId: com.uzairwaseem.talenthunter
+---
+- tapOn:
+    id: field-job-title
+- inputText: Native demo job
+- tapOn:
+    id: field-location-remote-arrangement
+- inputText: Dublin
+- tapOn:
+    id: field-job-description
+- inputText: Synthetic native assessment fixture.
+- hideKeyboard
+- tapOn: Publish job
+- assertVisible: Native demo job
+- assertVisible: No applications yet. Candidates can find this job in their feed.

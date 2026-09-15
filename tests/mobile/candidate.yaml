@@ -1,0 +1,22 @@
+appId: com.uzairwaseem.talenthunter
+---
+- launchApp:
+    clearState: true
+- tapOn:
+    id: field-email
+- inputText: ${CANDIDATE_EMAIL}
+- tapOn:
+    id: field-password
+- inputText: ${CANDIDATE_PASSWORD}
+- hideKeyboard
+- tapOn: Sign in
+- tapOn:
+    text: Not Now
+    optional: true
+- assertVisible: Hello, Candidate A.
+- tapOn: Manage my resume
+- assertVisible: Your resume, ready to go.
+- assertVisible: "Current resume: Synthetic-CV-v2.pdf"
+- stopApp
+- launchApp
+- assertVisible: Hello, Candidate A.

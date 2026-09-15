@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <body
+    style="
+      margin: 0;
+      padding: 28px;
+      background: #f7f7fa;
+      color: #0d102a;
+      font-family: Arial, sans-serif;
+    "
+  >
+    <div
+      style="
+        max-width: 520px;
+        margin: auto;
+        padding: 28px;
+        background: white;
+        border: 1px solid #dddeea;
+        border-radius: 16px;
+      "
+    >
+      <p style="color: #9c00d9; font-weight: bold">TalentHunter Demo</p>
+      <h1 style="font-size: 24px">Confirm your email</h1>
+      <p>
+        Return to TalentHunter and enter this code on the Confirm your email
+        screen:
+      </p>
+      <p
+        style="
+          padding: 18px;
+          background: #f7f7fa;
+          text-align: center;
+          font-size: 30px;
+          letter-spacing: 6px;
+        "
+      >
+        <strong id="verification-code">{{ .Token }}</strong>
+      </p>
+      <p>
+        This code is for one use and expires after a short time. Use the latest
+        code you requested.
+      </p>
+      <p>
+        If you did not create this account, you can ignore this email. Do not
+        share the code.
+      </p>
+      <p style="font-size: 12px; color: #626579">
+        An assessment demonstration by Uzair Waseem.
+      </p>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,600 @@
+{
+  "info": {
+    "name": "TalentHunter — API QA lesson (prepared assessment demo)",
+    "description": "Run in order with a private local environment. Uses ordinary user logins and reads existing demo records; creates no jobs, applications or CVs. Link generation does not make the bucket public. Never supply an admin/service-role key. Tokens remain run-local. The selected candidate must be Aisha's prepared identity, owning recruiter TalentHunter and other recruiter IBAT. Do not run during fixture-changing suites.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "invalid_token",
+      "value": "not-a-valid-jwt"
+    }
+  ],
+  "item": [
+    {
+      "name": "01 Anonymous cannot read jobs",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "{{publishable_key}}"
+          }
+        ],
+        "url": "{{base_url}}/rest/v1/jobs?select=id"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "(() => {",
+              "pm.test(\"Anonymous access denied\", () => pm.expect([401,403]).to.include(pm.response.code));",
+              "})();"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 Invalid token is rejected",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "{{publishable_key}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{invalid_token}}"
+          }
+        ],
+        "url": "{{base_url}}/rest/v1/jobs?select=id"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "(() => {",
+              "pm.test(\"Invalid token rejected\", () => pm.response.to.have.status(401));",
+              "})();"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 Sign in candidate",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "{{publishable_key}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/auth/v1/token?grant_type=password",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"{{candidate_email}}\",\"password\":\"{{candidate_password}}\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "(() => {",
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const data = pm.response.json();",
+              "pm.test(\"Authenticated user and access token returned\", () => { pm.expect(data.access_token).to.be.a(\"string\").and.not.empty; pm.expect(data.user.id).to.be.a(\"string\"); });",
+              "if (pm.response.code === 200) { pm.variables.set(\"candidate_token\", data.access_token); pm.variables.set(\"candidate_id\", data.user.id); }",
+              "})();"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 Candidate reads own profile",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "{{publishable_key}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{candidate_token}}"
+          }
+        ],
+        "url": "{{base_url}}/rest/v1/profiles?select=id,role,full_name&id=eq.{{candidate_id}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "(() => {",
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Exactly the candidate profile is visible\", () => { const rows=pm.response.json(); pm.expect(rows).to.have.length(1); pm.expect(rows[0].id).to.equal(pm.variables.get(\"candidate_id\")); pm.expect(rows[0].role).to.equal(\"candidate\"); });",
+              "})();"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 Candidate browses three prepared jobs",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "{{publishable_key}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{candidate_token}}"
+          }
+        ],
+        "url": "{{base_url}}/rest/v1/jobs?select=id,title,recruiter_id"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "(() => {",
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const jobs=pm.response.json();",
+              "pm.test(\"Three prepared jobs include QA Tester\", () => { pm.expect(jobs).to.have.length(3); pm.expect(jobs.some(j => j.title === \"QA Tester\")).to.equal(true); });",
+              "const job=jobs.find(j=>j.title===\"QA Tester\"); if(job) {pm.variables.set(\"qa_job_id\",job.id); pm.variables.set(\"qa_owner_id\",job.recruiter_id);}",
+              "})();"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 Candidate sees their two applications",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "{{publishable_key}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{candidate_token}}"
+          }
+        ],
+        "url": "{{base_url}}/rest/v1/applications?select=id,job_id,candidate_id,resume_id&candidate_id=eq.{{candidate_id}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "(() => {",
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const rows=pm.response.json();",
+              "pm.test(\"Both applications belong to this candidate\",()=>{pm.expect(rows).to.have.length(2); pm.expect(rows.every(r=>r.candidate_id===pm.variables.get(\"candidate_id\"))).to.equal(true);});",
+              "const application=rows.find(r=>r.job_id===pm.variables.get(\"qa_job_id\"));",
+              "pm.test(\"Candidate applied to the QA job\",()=>pm.expect(application).to.be.an(\"object\"));",
+              "if(application){pm.variables.set(\"application_id\",application.id);pm.variables.set(\"resume_id\",application.resume_id);}",
+              "})();"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "07 Candidate reads submitted CV metadata",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "{{publishable_key}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{candidate_token}}"
+          }
+        ],
+        "url": "{{base_url}}/rest/v1/resumes?select=id,candidate_id,storage_path,original_name&id=eq.{{resume_id}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "(() => {",
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const rows=pm.response.json(); pm.test(\"Submitted CV belongs to candidate\",()=>{pm.expect(rows).to.have.length(1);pm.expect(rows[0].candidate_id).to.equal(pm.variables.get(\"candidate_id\"));}); if(rows.length===1)pm.variables.set(\"resume_path\",rows[0].storage_path);",
+              "})();"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "08 Sign in owning recruiter",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "{{publishable_key}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/auth/v1/token?grant_type=password",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"{{owner_email}}\",\"password\":\"{{owner_password}}\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "(() => {",
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const data = pm.response.json();",
+              "pm.test(\"Authenticated user and access token returned\", () => { pm.expect(data.access_token).to.be.a(\"string\").and.not.empty; pm.expect(data.user.id).to.be.a(\"string\"); });",
+              "if (pm.response.code === 200) { pm.variables.set(\"owner_token\", data.access_token); pm.variables.set(\"owner_id\", data.user.id); }",
+              "})();"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "09 Owning recruiter reads four QA applicants",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "{{publishable_key}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{owner_token}}"
+          }
+        ],
+        "url": "{{base_url}}/rest/v1/applications?select=id,job_id,candidate_name&job_id=eq.{{qa_job_id}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "(() => {",
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Correct recruiter sees all four applicants\",()=>{pm.expect(pm.variables.get(\"owner_id\")).to.equal(pm.variables.get(\"qa_owner_id\"));const rows=pm.response.json();pm.expect(rows).to.have.length(4);pm.expect(rows.some(r=>r.id===pm.variables.get(\"application_id\"))).to.equal(true);});",
+              "})();"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "10 Sign in other recruiter",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "{{publishable_key}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/auth/v1/token?grant_type=password",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"{{other_email}}\",\"password\":\"{{other_password}}\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "(() => {",
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const data = pm.response.json();",
+              "pm.test(\"Authenticated user and access token returned\", () => { pm.expect(data.access_token).to.be.a(\"string\").and.not.empty; pm.expect(data.user.id).to.be.a(\"string\"); });",
+              "if (pm.response.code === 200) { pm.variables.set(\"other_token\", data.access_token); pm.variables.set(\"other_id\", data.user.id); }",
+              "})();"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "11 Other recruiter cannot read exact application ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "{{publishable_key}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{other_token}}"
+          }
+        ],
+        "url": "{{base_url}}/rest/v1/applications?select=*&id=eq.{{application_id}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "(() => {",
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"No private application is returned\",()=>pm.expect(pm.response.json()).to.deep.equal([]));",
+              "})();"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "12 Other recruiter cannot read CV metadata",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "{{publishable_key}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{other_token}}"
+          }
+        ],
+        "url": "{{base_url}}/rest/v1/resumes?select=*&id=eq.{{resume_id}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "(() => {",
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"No private CV metadata is returned\",()=>pm.expect(pm.response.json()).to.deep.equal([]));",
+              "})();"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "13 Owner can request a short-lived CV link",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "{{publishable_key}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{owner_token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/storage/v1/object/sign/resumes/{{resume_path}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"expiresIn\":60}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "(() => {",
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"A signed link is returned\",()=>pm.expect(pm.response.json().signedURL).to.be.a(\"string\").and.not.empty);",
+              "})();"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "14 Other recruiter cannot request that CV link",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "{{publishable_key}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{other_token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/storage/v1/object/sign/resumes/{{resume_path}}",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"expiresIn\":60}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "(() => {",
+              "pm.test(\"Private file link denied\",()=>{pm.expect(pm.response.code).to.be.within(400,499);pm.expect(pm.response.json()).not.to.have.property(\"signedURL\");});",
+              "})();"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "15 Close candidate test session",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "{{publishable_key}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{candidate_token}}"
+          }
+        ],
+        "url": "{{base_url}}/auth/v1/logout?scope=local"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "(() => {",
+              "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+              "pm.variables.unset(\"candidate_token\");",
+              "})();"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "16 Close owner test session",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "{{publishable_key}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{owner_token}}"
+          }
+        ],
+        "url": "{{base_url}}/auth/v1/logout?scope=local"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "(() => {",
+              "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+              "pm.variables.unset(\"owner_token\");",
+              "})();"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "17 Close other test session",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "apikey",
+            "value": "{{publishable_key}}"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{other_token}}"
+          }
+        ],
+        "url": "{{base_url}}/auth/v1/logout?scope=local"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "(() => {",
+              "pm.test(\"HTTP 204\", () => pm.response.to.have.status(204));",
+              "pm.variables.unset(\"other_token\");",
+              "})();"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

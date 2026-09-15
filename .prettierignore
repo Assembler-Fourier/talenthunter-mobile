@@ -1,0 +1,4 @@
+# Local Postman working copies can contain credentials and are not shareable source.
+tests/postman/.postman/
+tests/postman/postman/
+.local/

@@ -1,0 +1,262 @@
+{
+  "version": "2.0.0",
+  "options": {
+    "cwd": "${workspaceFolder}"
+  },
+  "tasks": [
+    {
+      "label": "TalentHunter: Start hosted assessment app",
+      "type": "shell",
+      "command": "npm run dev:hosted",
+      "options": {
+        "env": {
+          "CI": "0",
+          "FORCE_COLOR": "0"
+        }
+      },
+      "isBackground": true,
+      "runOptions": {
+        "instanceLimit": 1
+      },
+      "problemMatcher": {
+        "owner": "metro",
+        "pattern": {
+          "regexp": "^(.+):(\\d+):(\\d+): (.+)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "message": 4
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Starting project at",
+          "endsPattern": "Logs for your project will appear below"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true
+      }
+    },
+    {
+      "label": "TalentHunter: Check hosted connection (read-only)",
+      "type": "shell",
+      "command": "npm run check:hosted",
+      "group": "test",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "TalentHunter: Build iPhone (hosted Release)",
+      "type": "shell",
+      "command": "npm run build:iphone",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "TalentHunter: Install iPhone (existing Release)",
+      "type": "shell",
+      "command": "npm run install:iphone",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "TalentHunter: Start local Supabase",
+      "type": "shell",
+      "command": "npm run local:start",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "TalentHunter: Start local app",
+      "type": "shell",
+      "command": "npm run dev:local",
+      "dependsOn": "TalentHunter: Start local Supabase",
+      "options": {
+        "env": {
+          "CI": "0",
+          "FORCE_COLOR": "0"
+        }
+      },
+      "isBackground": true,
+      "runOptions": {
+        "instanceLimit": 1
+      },
+      "problemMatcher": {
+        "owner": "metro",
+        "pattern": {
+          "regexp": "^(.+):(\\d+):(\\d+): (.+)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "message": 4
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Starting project at",
+          "endsPattern": "Logs for your project will appear below"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true
+      }
+    },
+    {
+      "label": "TalentHunter: Open Android app (already built)",
+      "type": "shell",
+      "command": "bash scripts/open-local-app.sh android",
+      "dependsOn": "TalentHunter: Start local app",
+      "problemMatcher": []
+    },
+    {
+      "label": "TalentHunter: Open iOS app (already built)",
+      "type": "shell",
+      "command": "bash scripts/open-local-app.sh ios",
+      "dependsOn": "TalentHunter: Start local app",
+      "problemMatcher": []
+    },
+    {
+      "label": "TalentHunter: Build and run Android locally",
+      "type": "shell",
+      "command": "npm run android:dev",
+      "dependsOn": "TalentHunter: Start local Supabase",
+      "osx": {
+        "options": {
+          "env": {
+            "ANDROID_HOME": "/opt/homebrew/share/android-commandlinetools"
+          }
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "TalentHunter: Build iOS simulator locally",
+      "type": "shell",
+      "command": "node scripts/with-backend.mjs local bash scripts/build-ios-simulator.sh",
+      "dependsOn": "TalentHunter: Start local Supabase",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "TalentHunter: Typecheck",
+      "type": "shell",
+      "command": "npm run typecheck",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": "$tsc"
+    },
+    {
+      "label": "TalentHunter: Test local security",
+      "type": "shell",
+      "command": "npm run test:local",
+      "dependsOn": "TalentHunter: Start local Supabase",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "TalentHunter: Test local email confirmation",
+      "type": "shell",
+      "command": "npm run test:email:local",
+      "dependsOn": "TalentHunter: Start local Supabase",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "TalentHunter: Deep local audit (includes known limitations)",
+      "type": "shell",
+      "command": "npm run test:audit:local",
+      "dependsOn": "TalentHunter: Start local Supabase",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "TalentHunter: Test backend configuration",
+      "type": "shell",
+      "command": "npm run test:config",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "TalentHunter: Check formatting",
+      "type": "shell",
+      "command": "npm run format:check",
+      "problemMatcher": []
+    },
+    {
+      "label": "TalentHunter: Build submission APK (hosted backend)",
+      "type": "shell",
+      "command": "npm run build:android",
+      "osx": {
+        "options": {
+          "env": {
+            "ANDROID_HOME": "/opt/homebrew/share/android-commandlinetools"
+          }
+        }
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "TalentHunter: Stop local Supabase (keep data)",
+      "type": "shell",
+      "command": "npm run local:stop",
+      "problemMatcher": []
+    },
+    {
+      "label": "TalentHunter: Test unit and configuration boundaries",
+      "type": "shell",
+      "command": "npm run test:unit",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "TalentHunter: Test Postman API collection",
+      "type": "shell",
+      "command": "npm run test:postman",
+      "group": "test",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "TalentHunter: Test local input and upload boundaries",
+      "type": "shell",
+      "command": "npm run test:boundaries:local",
+      "group": "test",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    }
+  ]
+}

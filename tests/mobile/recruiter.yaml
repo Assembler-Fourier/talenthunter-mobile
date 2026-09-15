@@ -1,0 +1,19 @@
+appId: com.uzairwaseem.talenthunter
+---
+- launchApp:
+    clearState: true
+- tapOn:
+    id: field-email
+- inputText: ${RECRUITER_EMAIL}
+- tapOn:
+    id: field-password
+- inputText: ${RECRUITER_PASSWORD}
+- hideKeyboard
+- tapOn: Sign in
+- tapOn:
+    text: Not Now
+    optional: true
+- assertVisible: Welcome, Recruiter A.
+- tapOn: Post a job
+- tapOn: Publish job
+- assertVisible: Please fill in the title, location and description.

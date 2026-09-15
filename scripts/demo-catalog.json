@@ -1,0 +1,217 @@
+{
+  "label": "TalentHunter assessment demonstration - September 2026",
+  "disclosure": "All candidate biographies and applications are fictional. Public job listings are summarised for a private technical assessment, not republished to the employer website.",
+  "sourceReviewed": "2026-09-14",
+  "recruiters": [
+    {
+      "key": "talenthunter",
+      "name": "TalentHunter Recruitment",
+      "email": "talenthunter.recruiter.demo@example.com",
+      "legacy": "Recruiter A",
+      "organisation": "TalentHunter LTD (assessment workspace)"
+    },
+    {
+      "key": "ibat",
+      "name": "IBAT Dublin Recruitment",
+      "email": "ibat.recruiter.demo@example.com",
+      "legacy": "Recruiter B",
+      "organisation": "IBAT Dublin (assessment workspace)"
+    }
+  ],
+  "jobs": [
+    {
+      "key": "frontend",
+      "recruiter": "talenthunter",
+      "title": "Front End Developer",
+      "location": "Ireland",
+      "salary": "EUR 50,000",
+      "expectedApplicants": 3,
+      "source": "https://www.talenthunter.me/job-detail-one/a2eaa00f-51cc-40b5-b226-6cc8d35dcf43",
+      "description": "TalentHunter LTD | Full time | EUR 50,000\n\nBuild and maintain user-facing product features, working with design and backend colleagues. Bring strong HTML, CSS and JavaScript skills, experience with a frontend framework such as React, and an understanding of responsive interfaces, accessibility and cross-browser behaviour. Maintain readable code and use Git collaboratively. The public advert requires the legal right to work in Ireland.\n\nAssessment demonstration: this is a summary of a public listing reviewed on 14 September 2026. Applications here are fictional and remain inside Uzair's separate assessment project.\nSource: https://www.talenthunter.me/job-detail-one/a2eaa00f-51cc-40b5-b226-6cc8d35dcf43"
+    },
+    {
+      "key": "qa",
+      "recruiter": "talenthunter",
+      "title": "QA Tester",
+      "location": "Remote / Dublin, Ireland",
+      "salary": "EUR 45,000",
+      "expectedApplicants": 4,
+      "source": "https://www.talenthunter.me/job-detail-one/638dd904-8f56-43b6-bb83-7f1d89c5cc23",
+      "description": "TalentHunter LTD | Full time | EUR 45,000\n\nTranslate requirements into clear test cases; run functional, regression, smoke and exploratory checks; report reproducible defects and verify fixes. Work with developers and product colleagues, maintain test evidence and improve coverage. The advert asks for at least one year of QA or related experience, web-testing knowledge, clear communication and familiarity with defect tools and Agile delivery. SQL, API testing and automation are advantages. Its location field says Remote, while the description/benefits also mention Dublin and hybrid work; confirm arrangements with the employer.\n\nAssessment demonstration: a summary of the public listing reviewed on 14 September 2026. No real recruitment applications are submitted by this app.\nSource: https://www.talenthunter.me/job-detail-one/638dd904-8f56-43b6-bb83-7f1d89c5cc23"
+    },
+    {
+      "key": "hr",
+      "recruiter": "ibat",
+      "title": "HR Manager",
+      "location": "Wellington Quay, Dublin - hybrid",
+      "salary": "EUR 55,000-60,000",
+      "expectedApplicants": 3,
+      "source": "https://www.talenthunter.me/job-detail-one/a783a708-63e2-4a9e-9ee4-a61c1d88573a",
+      "description": "IBAT Dublin | Full time | EUR 55,000-60,000\n\nSupport strategic and operational HR, partnering with managers on employee relations, policies, recruitment, development and workforce planning. The advert seeks five years of HR generalist or senior-adviser experience, relevant degree-level study, CIPD Associate or equivalent, practical Irish employment-law knowledge and confident stakeholder coaching. The hybrid arrangement requires at least three campus days weekly and travel between Dublin campuses when needed.\n\nAssessment demonstration: a concise summary of IBAT's public vacancy reviewed on 14 September 2026. Fictional candidates are used solely to demonstrate the assessment system. This workspace does not represent an IBAT recruitment team.\nSource: https://www.talenthunter.me/job-detail-one/a783a708-63e2-4a9e-9ee4-a61c1d88573a"
+    }
+  ],
+  "candidates": [
+    {
+      "key": "aisha",
+      "name": "Aisha Rahman",
+      "email": "aisha.rahman.demo@example.com",
+      "legacy": "Candidate A",
+      "city": "Dublin",
+      "headline": "Frontend Developer | Accessible React Interfaces",
+      "appliesTo": ["frontend", "qa"],
+      "cv": "Aisha-Rahman-CV.pdf",
+      "summary": "Frontend developer with four years of fictional product-team experience building React interfaces and testing critical customer journeys. Combines thoughtful interaction design with a methodical approach to quality, accessibility and readable code.",
+      "skills": "React, TypeScript, JavaScript, HTML, CSS, responsive layouts, accessibility, Git, component testing, API inspection",
+      "experience": [
+        {
+          "title": "Frontend Developer | Cedarbridge Digital",
+          "dates": "2023-2026",
+          "points": [
+            "Built reusable form and navigation components for a customer portal, including loading, validation and empty states.",
+            "Worked with designers and API engineers to deliver responsive flows and document interface contracts.",
+            "Investigated keyboard-focus and stale-data defects, adding regression coverage for the affected journeys."
+          ]
+        },
+        {
+          "title": "Junior Web Developer | Harbour Lane Studio",
+          "dates": "2022-2023",
+          "points": [
+            "Maintained content and account pages with semantic HTML, CSS and JavaScript.",
+            "Supported browser compatibility checks and reviewed pull requests with a senior engineer."
+          ]
+        }
+      ],
+      "education": "BSc Computing, 2022 - fictional training history",
+      "project": "Portfolio project: a React booking dashboard with typed API responses, accessible form errors and test cases for retries and duplicate actions."
+    },
+    {
+      "key": "daniel",
+      "name": "Daniel Murphy",
+      "email": "daniel.murphy.demo@example.com",
+      "legacy": "Candidate B",
+      "city": "Cork",
+      "headline": "Software QA Analyst | Frontend Quality",
+      "appliesTo": ["frontend", "qa"],
+      "cv": "Daniel-Murphy-CV.pdf",
+      "summary": "QA analyst with three years of fictional web-product experience and practical React development skills. Enjoys translating user stories into clear test cases, diagnosing UI defects and collaborating on fixes that improve the customer experience.",
+      "skills": "Functional testing, regression testing, exploratory testing, Jira, SQL, API testing, React, JavaScript, Git, test documentation",
+      "experience": [
+        {
+          "title": "QA Analyst | Brookfield Software",
+          "dates": "2024-2026",
+          "points": [
+            "Owned test scenarios for account creation, file upload and application workflows in a small product team.",
+            "Documented reproducible defects with clear steps, expected results and supporting request evidence.",
+            "Retested fixes and maintained a focused release smoke suite across desktop and mobile browsers."
+          ]
+        },
+        {
+          "title": "Junior Frontend Developer | Liffey Web Works",
+          "dates": "2023-2024",
+          "points": [
+            "Implemented React forms and API-driven tables using reusable components.",
+            "Added edge-case checks for empty responses, loading errors and duplicate submissions."
+          ]
+        }
+      ],
+      "education": "Higher Diploma in Software Development, 2023 - fictional training history",
+      "project": "Portfolio project: a documented QA pack for a recruitment portal, combining manual acceptance cases, SQL checks and a small browser smoke suite."
+    },
+    {
+      "key": "sofia",
+      "name": "Sofia Almeida",
+      "email": "sofia.almeida.demo@example.com",
+      "city": "Dublin",
+      "headline": "People Operations & HR Systems Specialist",
+      "appliesTo": ["qa", "hr"],
+      "cv": "Sofia-Almeida-CV.pdf",
+      "summary": "People-operations professional with six years of fictional HR experience and a focus on reliable HR systems. Experienced in manager support, onboarding, policy documentation and user acceptance testing for employee-facing tools.",
+      "skills": "Employee relations, HR policy, stakeholder coaching, onboarding, HR data quality, UAT, test cases, issue reporting, Excel, workforce reporting",
+      "experience": [
+        {
+          "title": "Senior HR Adviser | Meridian Learning Services",
+          "dates": "2022-2026",
+          "points": [
+            "Partnered with managers on employee-relations cases, performance processes and people-policy updates.",
+            "Coordinated onboarding improvements and maintained consistent HR process documentation.",
+            "Led user acceptance scenarios for an HR platform rollout, tracking defects and confirming fixes before release."
+          ]
+        },
+        {
+          "title": "HR Generalist | Elmstone Services",
+          "dates": "2020-2022",
+          "points": [
+            "Supported recruitment coordination, employee queries and accurate personnel records.",
+            "Prepared workforce reports and worked with managers to improve data completeness."
+          ]
+        }
+      ],
+      "education": "BA Human Resource Management; CIPD Associate-equivalent study - fictional qualifications",
+      "project": "Portfolio project: an HR-system acceptance plan covering joiner, mover and leaver journeys, permissions and reporting accuracy."
+    },
+    {
+      "key": "cian",
+      "name": "Cian Walsh",
+      "email": "cian.walsh.demo@example.com",
+      "city": "Galway",
+      "headline": "HR Technology Lead | React & People Operations",
+      "appliesTo": ["frontend", "hr"],
+      "cv": "Cian-Walsh-CV.pdf",
+      "summary": "HR technology specialist combining seven years of fictional people-operations experience with hands-on frontend development. Builds practical employee tools while retaining a strong focus on policy, stakeholder needs and accessible interfaces.",
+      "skills": "HR operations, employee relations, stakeholder management, React, TypeScript, CSS, accessible forms, HRIS, workforce planning, Git",
+      "experience": [
+        {
+          "title": "HR Technology Lead | Oakwell Education Services",
+          "dates": "2023-2026",
+          "points": [
+            "Partnered with people managers on process improvements and employee-support workflows.",
+            "Built a React prototype for onboarding tasks with role-specific views and clear validation feedback.",
+            "Documented HR system requirements and worked with technical colleagues on access and data-quality reviews."
+          ]
+        },
+        {
+          "title": "HR Generalist | Atlantic Learning Group",
+          "dates": "2019-2023",
+          "points": [
+            "Supported employee relations, recruitment coordination and manager guidance.",
+            "Maintained people policies and produced workforce planning reports for senior stakeholders."
+          ]
+        }
+      ],
+      "education": "BA Business and HRM; frontend development diploma; CIPD-equivalent study - fictional qualifications",
+      "project": "Portfolio project: an employee self-service frontend with accessible navigation and forms, designed from documented HR user journeys."
+    },
+    {
+      "key": "maya",
+      "name": "Maya Patel",
+      "email": "maya.patel.demo@example.com",
+      "city": "Dublin",
+      "headline": "HR Generalist | Process Quality & Systems Testing",
+      "appliesTo": ["qa", "hr"],
+      "cv": "Maya-Patel-CV.pdf",
+      "summary": "HR generalist with six years of fictional experience across employee support, recruitment and policy administration. Brings a structured testing mindset to people systems, with clear documentation and careful handling of access and data quality.",
+      "skills": "HR generalist practice, recruitment, onboarding, policy development, manager coaching, UAT, regression checks, SQL basics, defect reports, HRIS",
+      "experience": [
+        {
+          "title": "Senior HR Generalist | Clearbrook College Services",
+          "dates": "2022-2026",
+          "points": [
+            "Advised managers on people policies and coordinated consistent onboarding and performance processes.",
+            "Designed UAT cases for employee record changes and validated permission boundaries with system administrators.",
+            "Maintained issue logs, retested corrections and prepared clear training notes for staff."
+          ]
+        },
+        {
+          "title": "People Operations Coordinator | Willowgate Partners",
+          "dates": "2020-2022",
+          "points": [
+            "Managed recruitment scheduling, employee queries and personnel-data checks.",
+            "Produced recurring workforce reports and investigated inconsistencies before publication."
+          ]
+        }
+      ],
+      "education": "BA Human Resource Management; CIPD Associate-equivalent study - fictional qualifications",
+      "project": "Portfolio project: a quality review of an HR onboarding system, with acceptance criteria, test data, privacy checks and a defect retest log."
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+# Run candidate.yaml first. A newly created Native demo job must be the newest job.
+appId: com.uzairwaseem.talenthunter
+---
+- assertVisible: Hello, Candidate A.
+- assertVisible: Native demo job
+- tapOn:
+    text: View job
+    index: 0
+- assertVisible: Native demo job
+- assertVisible: Apply with Synthetic-CV-v2.pdf
+- tapOn: Apply for this job
+- assertVisible: Application submitted. The recruiter can now review your resume.

@@ -1,0 +1,31 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "TalentHunter: Web (hosted assessment)",
+      "type": "pwa-chrome",
+      "request": "launch",
+      "url": "http://127.0.0.1:8081",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "TalentHunter: Start hosted assessment app",
+      "skipFiles": ["**/node_modules/**"]
+    },
+    {
+      "name": "TalentHunter: Web (local Supabase)",
+      "type": "pwa-chrome",
+      "request": "launch",
+      "url": "http://127.0.0.1:8082",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "TalentHunter: Start local app",
+      "skipFiles": ["**/node_modules/**"]
+    },
+    {
+      "name": "TalentHunter: Native attach (local, Expo alpha)",
+      "type": "expo",
+      "request": "attach",
+      "projectRoot": "${workspaceFolder}",
+      "bundlerHost": "127.0.0.1",
+      "bundlerPort": "8082"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+# Recruiter A must be signed in. Native demo job must be the newest owned job.
+appId: com.uzairwaseem.talenthunter
+---
+- launchApp
+- assertVisible: Welcome, Recruiter A.
+- assertVisible: Native demo job
+- tapOn:
+    text: View applicants
+    index: 0
+- assertVisible: Native demo job
+- assertVisible: Candidate A
+- assertVisible: Synthetic-CV-v2.pdf
+- tapOn: Open resume

@@ -1,0 +1,12 @@
+# Candidate A must be signed in on the home screen, with an existing resume.
+# Push the synthetic PDF into /sdcard/Download before running this flow.
+appId: com.uzairwaseem.talenthunter
+---
+- launchApp
+- tapOn: Manage my resume
+- tapOn: Upload a new resume
+- tapOn: Show roots
+- tapOn: Downloads
+- tapOn: Synthetic-CV-v2.pdf
+- assertVisible: Resume uploaded. It will be used for your next application.
+- assertVisible: "Current resume: Synthetic-CV-v2.pdf"
